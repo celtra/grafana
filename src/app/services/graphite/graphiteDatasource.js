@@ -49,6 +49,24 @@ function (angular, _, $, config, kbn, moment) {
     }
   };
 
+  GraphiteDatasource.prototype.events = function(options) {
+    try {
+      var tags = '';
+      if (options.target != null) {
+        tags = '&tags=' + options.target;
+      }
+
+      return this.doGraphiteRequest({
+        method: 'GET',
+        url: '/events/get_data?from=' + this.translateTime(options.range.from) + '&until=' + this.translateTime(options.range.to) + tags,
+        datasource: options.datasource
+      });
+    }
+    catch(err) {
+      return this.$q.reject(err);
+    }
+  };
+
   GraphiteDatasource.prototype.translateTime = function(date) {
     if (_.isString(date)) {
       if (date === 'now') {
