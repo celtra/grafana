@@ -217,6 +217,14 @@ function (angular, $, kbn, moment, _) {
             return;
           }
 
+          options.grid.markings = [];
+          _.each(data.annotations, function(event) {
+            options.grid.markings.push({
+              color: "red",
+              lineWidth: 1,
+              xaxis: { from: event.min, to: event.max }
+            });
+          });
           options.events = {
             levels: 1,
             data: data.annotations,
@@ -224,10 +232,10 @@ function (angular, $, kbn, moment, _) {
               'annotation': {
                 level: 1,
                 icon: {
-                  icon: "icon-tag icon-flip-vertical",
-                  size: 20,
+                  icon: "icon-chevron-up",
+                  size: 10,
                   color: "#222",
-                  outline: "#bbb"
+                  outline: "#bbb",
                 }
               }
             }
