@@ -31,27 +31,24 @@ define([
         maxDataPoints: 100
       };
 
-      return datasourceSrv.default.query(graphiteQuery)
+
+      return datasourceSrv.default.events(graphiteQuery)
         .then(function(results) {
-          return _.reduce(results.data, function(list, target) {
-            _.each(target.datapoints, function (values) {
-              if (values[0] === null) {
-                return;
-              }
-
-              list.push({
-                min: values[1] * 1000,
-                max: values[1] * 1000,
-                eventType: "annotation",
-                title: null,
-                description: "<small><i class='icon-tag icon-flip-vertical'></i>test</small><br>"+
-                  moment(values[1] * 1000).format('YYYY-MM-DD HH:mm:ss'),
-                score: 1
-              });
+          var list = [];
+          _.each(results.data, function (event) {
+            console.log(event);
+            list.push({
+              min: event.when * 1000,
+              max: event.when * 1000,
+              eventType: "annotation",
+              title: event.what,
+              description: "<small><b>" + event.what + "</b><br/><i>" +
+                moment(event.when * 1000).format('YYYY-MM-DD HH:mm:ss') +
+                "</i><br/>" + event.data +'</small>',
+              score: 1
             });
-
-            return list;
-          }, []);
+          });
+          return list;
         })
         .then(null, function() {
           alertSrv.set('Annotations','Could not fetch annotations','error');
