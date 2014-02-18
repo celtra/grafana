@@ -36,7 +36,6 @@ define([
         .then(function(results) {
           var list = [];
           _.each(results.data, function (event) {
-            console.log(event);
             list.push({
               min: event.when * 1000,
               max: event.when * 1000,
