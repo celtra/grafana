@@ -1,8 +1,9 @@
 define([
   'angular',
   'underscore',
+  'config',
   'moment'
-], function (angular, _, moment) {
+], function (angular, _, config, moment) {
   'use strict';
 
   var module = angular.module('kibana.services');
@@ -10,20 +11,7 @@ define([
   module.service('annotationsSrv', function(dashboard, datasourceSrv, $q, alertSrv) {
 
     this.init = function() {
-      this.annotationList = [
-       /* {
-          type: 'graphite-target',
-          enabled: false,
-          target: 'metrics_data.mysite.dolph.counters.payment.cart_klarna_payment_completed.count',
-          name: 'deploys',
-        },
-        {
-          type: 'graphite-target',
-          enabled: true,
-          target: 'metrics_data.mysite.dolph.counters.payment.cart_paypal_payment_completed.count',
-          name: 'restarts',
-        }*/
-      ];
+      this.annotationList = config.annotationList;
     };
 
     this.getAnnotations = function(rangeUnparsed) {
